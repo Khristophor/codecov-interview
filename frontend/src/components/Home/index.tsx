@@ -49,7 +49,7 @@ export default function Example() {
             value={searchTerm}
             onChange={handleSearchChange}
           />
-          <div>
+          <Content>
             {repos.map((repo: any, i: number) => (
               <Row key={i}>
                 <Octicon name="repo"></Octicon>
@@ -68,7 +68,7 @@ export default function Example() {
                 <CoverageTotals totals={repo?.cache?.commit?.totals} />
               </Row>
             ))}
-          </div>
+          </Content>
         </Container>
       )}
       {state.status === Status.ERROR && (
@@ -81,9 +81,20 @@ export default function Example() {
   );
 }
 
+const Content = styled.div`
+  border-radius: 8px;
+  box-shadow: 0 2px 15px 0 rgba(14, 27, 41, 0.05);
+  background-color: #ffffff;
+  background: white;
+  margin-top: 2rem;
+  padding: 3rem;
+  display: grid;
+  grid-gap: 3rem;
+`;
+
 const Row = styled.div`
   display: grid;
-  grid-template-columns: 2rem 1fr 10rem;
+  grid-template-columns: 2rem 1fr 15rem;
   align-items: center;
 `;
 
@@ -108,7 +119,7 @@ const Info = styled.div`
   font-style: normal;
   line-height: normal;
   letter-spacing: normal;
-  color: var(--bluey-grey);
+  color: var(--blue-grey);
 `;
 
 const RepoName = styled.span`
