@@ -1,13 +1,13 @@
-import { useCallback, useContext } from "react";
+import { useCallback, useReducer } from "react";
 import axios from "axios";
-import context, { Status } from "../context";
-import { ReducerState } from "../context/reducer";
+import { Status } from "../context";
+import reducer, { ReducerState } from "../context/reducer";
 
 const useApiRequest = (
   endpoint: string,
   { verb = "get", params = {} } = {}
 ): [ReducerState, () => Promise<void>] => {
-  const { state, dispatch } = useContext(context);
+  const [state, dispatch] = useReducer(reducer, {});
 
   const makeRequest = useCallback(async () => {
     dispatch({ type: Status.FETCHING });
