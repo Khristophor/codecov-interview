@@ -1,73 +1,52 @@
 import * as React from "react";
 import styled from "styled-components";
-import Octicon from "octicons-react-ts";
-import { formatDistance } from "date-fns";
 
 import { Page, Container } from "../styles";
 import useApiRequest from "../../hooks/useApi";
 import { Status } from "../../context";
 import UserBadge from "../UserBadge";
-import CoverageTotals from "../CoverageTotals";
 
-export default function Home() {
+export default function Example() {
   const [state, makeRequest] = useApiRequest(
-    `https://codecov.io/api/gh/ansible`,
+    `https://codecov.io/api/gh/ansible/ansible/commits`,
     {
       verb: "get"
     }
   );
-  const [repos, setRepos] = React.useState([]);
-  const [searchTerm, setSearchTerm] = React.useState("");
-
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (state) {
-      setSearchTerm(event.target.value);
-    }
-  };
+  const [commits, setCommits] = React.useState([]);
 
   // On load
   React.useEffect(() => {
     makeRequest();
   }, []);
 
-  // On serchTerm change
+  // Load commits
   React.useEffect(() => {
-    const results = state?.response?.data?.repos.filter((repo: any) =>
-      repo.name.toLowerCase().includes(searchTerm)
-    );
-    setRepos(results);
-  }, [searchTerm, state]);
+    setCommits(state?.response?.data?.commits);
+  }, [state]);
+
+  console.log(commits);
 
   return (
     <Page>
       {state.status === Status.FETCHING && <div>Fetching...</div>}
-      {state.status === Status.SUCCESS && repos && (
+      {state.status === Status.SUCCESS && (
         <Container>
-          <FilterInput
-            type="text"
-            placeholder="Search"
-            value={searchTerm}
-            onChange={handleSearchChange}
-          />
+          <div>Chart goes here</div>
           <Content>
-            {repos.map((repo: any, i: number) => (
-              <Row key={i}>
-                <Octicon name="repo"></Octicon>
-                <Details>
-                  <RepoName>{repo.name}</RepoName>
-                  <Info>
-                    Latest commit{" "}
-                    {formatDistance(new Date(), new Date(repo.latest_commit))}{" "}
-                    ago by
+            <Title>Recent Commits</Title>
+            {commits &&
+              commits.map((commit: any, i) => (
+                <Row key={i}>
+                  <div>
                     <UserBadge
-                      userName={repo.cache.commit.author.username}
-                      serviceId={repo.cache.commit.author.service_id}
+                      userName=""
+                      serviceId={commit?.author?.service_id}
                     ></UserBadge>
-                  </Info>
-                </Details>
-                <CoverageTotals totals={repo?.cache?.commit?.totals} />
-              </Row>
-            ))}
+                  </div>
+                  <div>{commit.message}</div>
+                </Row>
+              ))}
           </Content>
         </Container>
       )}
@@ -96,6 +75,16 @@ const Row = styled.div`
   display: grid;
   grid-template-columns: 2rem 1fr 15rem;
   align-items: center;
+`;
+
+const Title = styled.h2`
+  font-size: 18px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.06;
+  letter-spacing: normal;
+  color: #00243d;
 `;
 
 const FilterInput = styled.input`

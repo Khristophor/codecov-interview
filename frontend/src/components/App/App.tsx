@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { Page } from "../styles";
 import { Provider } from "../../context";
 import Home from "../Home";
+import Overview from "../Overview";
 
 function App() {
   return (
@@ -21,11 +22,20 @@ function App() {
                     <MenuText>Repositories</MenuText>
                   </MenuItem>
                 </Li>
+                <Li>
+                  <MenuItem to="/overview">
+                    <Octicon name="dashboard"></Octicon>
+                    <MenuText>Overview</MenuText>
+                  </MenuItem>
+                </Li>
               </Ul>
             </Nav>
           </Page>
 
           <Switch>
+            <Route path="/overview">
+              <Overview />
+            </Route>
             <Route path="/">
               <Home />
             </Route>

@@ -14,6 +14,7 @@ const checkNotEffected = (num: Total): string | number => {
   if (num === "0") return convertToPercentage(+num);
   return num > 0 ? convertToPercentage(+num) : "ø";
 };
+
 const CoverageTotals = ({ totals = [] }: Props) => {
   const [
     fileCount,
