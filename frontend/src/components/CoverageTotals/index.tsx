@@ -5,6 +5,7 @@ interface Props {
   totals?: Total[];
 }
 const CoverageTotals = ({ totals = [] }: Props) => {
+  console.log(totals);
   const [
     fileCount,
     linesCount,
