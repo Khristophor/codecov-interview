@@ -74,5 +74,5 @@ media/
 .vscode
 .pythonconfig
 
-# Venv
-venv
+# React
+build
